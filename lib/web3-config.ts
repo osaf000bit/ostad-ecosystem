@@ -1,6 +1,37 @@
-// Network + contract configuration.
-// ABIs and addresses here are PLACEHOLDERS — swap them for your real
-// OstadV1 / OstadV2 UUPS implementation ABIs and deployed proxy address.
+const DEFAULT_OSTAD_ABI = [
+  "function version() view returns (string)",
+  "function owner() view returns (address)",
+  "function paused() view returns (bool)",
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function totalSupply() view returns (uint256)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function proxiableUUID() view returns (bytes32)",
+  "function pause()",
+  "function unpause()",
+  "function transferOwnership(address newOwner)",
+  "function upgradeToAndCall(address newImplementation, bytes data) payable",
+  "function mint(address to, uint256 amount)",
+  "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+  "event Upgraded(address indexed implementation)",
+] as const
+
+const parseAbi = (): string[] => {
+  const raw =
+    process.env.NEXT_PUBLIC_OSTAD_ABI ?? process.env.NEXT_PUBLIC_OSTAD_ABI_JSON ?? ""
+
+  if (!raw.trim()) return [...DEFAULT_OSTAD_ABI]
+
+  try {
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed)) return parsed.map(String)
+    if (typeof parsed === "string") return JSON.parse(parsed).map(String)
+  } catch {
+    // Ignore invalid ABI env and fall back to the safe default list.
+  }
+
+  return [...DEFAULT_OSTAD_ABI]
+}
 
 export type NetworkInfo = {
   chainId: number
@@ -53,29 +84,12 @@ export const SUPPORTED_NETWORKS: Record<number, NetworkInfo> = {
 
 export const DEFAULT_CHAIN_ID = 11155111
 
-// Placeholder deployed proxy address (swap for the real one)
-export const OSTAD_PROXY_ADDRESS = "0x0000000000000000000000000000000000000000"
+export const OSTAD_PROXY_ADDRESS =
+  process.env.NEXT_PUBLIC_OSTAD_PROXY_ADDRESS ??
+  "0x0000000000000000000000000000000000000000"
 
-// Placeholder ABI for the Ostad UUPS upgradeable contract.
-export const OSTAD_ABI = [
-  "function version() view returns (string)",
-  "function owner() view returns (address)",
-  "function paused() view returns (bool)",
-  "function name() view returns (string)",
-  "function symbol() view returns (string)",
-  "function totalSupply() view returns (uint256)",
-  "function balanceOf(address account) view returns (uint256)",
-  "function proxiableUUID() view returns (bytes32)",
-  "function pause()",
-  "function unpause()",
-  "function transferOwnership(address newOwner)",
-  "function upgradeToAndCall(address newImplementation, bytes data) payable",
-  "function mint(address to, uint256 amount)",
-  "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
-  "event Upgraded(address indexed implementation)",
-]
+export const OSTAD_ABI: string[] = parseAbi()
 
-// Writable methods surfaced in the contract panel (placeholder set)
 export const WRITE_METHODS = [
   { name: "pause", label: "pause()", args: [] as string[] },
   { name: "unpause", label: "unpause()", args: [] as string[] },
