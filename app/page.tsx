@@ -5,6 +5,7 @@ import { Header } from "@/components/header"
 import { ContractPanel } from "@/components/contract-panel"
 import { DeployPanel } from "@/components/deploy-panel"
 import { PoolPanel } from "@/components/pool-panel"
+import { TronTokenPanel } from "@/components/tron-token-panel"
 import { useLang } from "@/components/providers"
 
 export default function Page() {
@@ -54,7 +55,7 @@ export default function Page() {
           <div className="grid gap-3 sm:grid-cols-3">{[["سلامت قرارداد", "۹۸٪", "بررسی خودکار ABI و مالکیت"], ["آمادگی چندشبکه‌ای", "۴ شبکه", "Ethereum · Polygon · BSC · Sepolia"], ["ثبت رویدادها", "آنـی", "ردیابی تغییرناپذیر تراکنش‌ها"]].map(([label, value, detail]) => <div key={label} className="rounded-xl border border-[#925b27]/50 bg-black/10 p-3"><p className="text-xs text-[#c99e7d]">{label}</p><p className="mt-1 text-lg font-semibold text-[#f1d2b4]">{value}</p><p className="mt-1 text-[11px] text-[#a98677]">{detail}</p></div>)}</div>
         </section>
 
-        <div id={t.tabContract} className="space-y-6"><ContractPanel /><div id={t.tabDeploy}><DeployPanel /></div><div id={t.tabPool}><PoolPanel /></div></div>
+        <div id={t.tabContract} className="space-y-6"><ContractPanel /><div id="tron-token"><TronTokenPanel /></div><div id={t.tabDeploy}><DeployPanel /></div><div id={t.tabPool}><PoolPanel /></div></div>
         <section className="mt-6 rounded-2xl border border-[#8c4c24]/60 bg-[#2a0d12]/70 p-5"><div className="flex items-center gap-2 text-[#e8b83e]"><Activity className="size-4" /><h2 className="text-sm font-semibold">موتور ثبت آنی تراکنش</h2></div><p className="mt-2 text-sm text-[#b99786]">اطلاعات تراکنش را وارد کنید؛ ثبت‌ها در دفتر تراکنش‌های اُستاد قابل پیگیری هستند.</p><a href="#contract" className="mt-4 inline-flex items-center gap-2 text-xs text-[#f0c34f]">مشاهده دفتر تراکنش‌ها <ArrowUpLeft className="size-3.5" /></a></section>
       </main>
       <footer className="mx-auto max-w-6xl px-4 py-8 text-center text-xs text-[#a98677] sm:px-6">{t.brand} · Ostad Gateway · UUPS</footer>
